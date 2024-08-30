@@ -21,3 +21,5 @@ export const load: PageServerLoad = async ({ url }) => {
 
 	redirect(301, link.url);
 };
+
+export const trailingSlash = 'ignore';
