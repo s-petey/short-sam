@@ -36,4 +36,5 @@ COPY --from=install /app/bun.lockb ./
 COPY --from=build /app/build ./build
 COPY --from=build /app/package.json ./package.json
 EXPOSE 3000
+CMD ["echo", "$ORIGIN"]
 CMD ["node", "-r", "dotenv/config", "build"]
