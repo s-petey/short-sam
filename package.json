@@ -45,6 +45,7 @@
 	"type": "module",
 	"dependencies": {
 		"@floating-ui/dom": "1.6.10",
+		"dotenv": "^16.4.5",
 		"drizzle-orm": "^0.33.0",
 		"drizzle-zod": "^0.5.1",
 		"nanoid": "^5.0.7",

@@ -8,9 +8,9 @@ services:
       args:
         - PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
     user: 'node'
-    environment:
-      - NODE_ENV=production
-      - ORIGIN=http://localhost:3000
+    # environment:
+    #   - NODE_ENV=production
+    #   - ORIGIN=http://localhost:3000
     # Points to a file with the sensitive environment variables
     env_file:
       - .env
