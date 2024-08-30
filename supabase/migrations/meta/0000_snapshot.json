@@ -1,5 +1,5 @@
 {
-  "id": "5003e707-ff37-4a85-ae45-42f6c62b3514",
+  "id": "c8fc7066-e8b4-447d-9b3a-48e9c59e0d71",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -8,9 +8,9 @@
       "name": "short_links",
       "schema": "",
       "columns": {
-        "link_id": {
-          "name": "link_id",
-          "type": "serial",
+        "short_url": {
+          "name": "short_url",
+          "type": "text",
           "primaryKey": true,
           "notNull": true
         },
@@ -19,18 +19,20 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "short_url": {
-          "name": "short_url",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
         }
       },
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {},
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "short_links_url_unique": {
+          "name": "short_links_url_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "url"
+          ]
+        }
+      }
     }
   },
   "enums": {},

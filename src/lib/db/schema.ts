@@ -5,9 +5,8 @@ import type { z } from 'zod';
 const pgTable = pgTableCreator((name) => `short_${name}`);
 
 export const LinksTable = pgTable('links', {
-	id: serial('link_id').notNull().primaryKey(),
-	url: text('url').notNull(),
-	shortUrl: text('short_url').notNull()
+	shortUrl: text('short_url').notNull().primaryKey(),
+	url: text('url').notNull().unique()
 	// TODO: Add tags?
 });
 

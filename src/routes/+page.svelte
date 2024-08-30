@@ -2,6 +2,7 @@
 	import { superForm } from 'sveltekit-superforms';
 	import SuperDebug from 'sveltekit-superforms';
 	import { getToastStore } from '@skeletonlabs/skeleton';
+	import { clipboard } from '@skeletonlabs/skeleton';
 
 	export let data;
 
@@ -10,33 +11,43 @@
 
 	$: if ($message) {
 		toastStore.trigger({
-			message: $message,
+			message: `Link created! ${$message}`,
 			autohide: true
 		});
 	}
+
+	$: errorMessage = $errors.url && typeof $errors.url[0] === 'string' ? $errors.url[0] : undefined;
 </script>
 
-<div class="container h-full mx-auto flex justify-center items-center">
-	<div class="space-y-5">
-		<form method="post" use:enhance>
-			<label for="url"> Url to shorten </label>
-			<input
-				type="url"
-				name="url"
-				bind:value={$form.url}
-				aria-invalid={$errors.url ? 'true' : undefined}
-				{...$constraints.url}
-			/>
+<form class="space-y-4" method="post" use:enhance>
+	<label class="label" for="url">
+		<span>Url</span>
 
-			{#if $errors.url}
-				<span class="error invalid">{$errors.url}</span>
-			{/if}
+		<input
+			class="input"
+			type="url"
+			name="url"
+			bind:value={$form.url}
+			aria-invalid={$errors.url ? 'true' : undefined}
+			{...$constraints.url}
+		/>
+	</label>
 
-			<div>
-				<button type="submit">Submit</button>
-			</div>
-		</form>
+	<div>
+		<button class="btn variant-filled" type="submit">Submit</button>
 	</div>
-</div>
+</form>
 
-<SuperDebug data={$form} />
+{#if errorMessage}
+	<span class="error invalid">
+		Link already exists
+
+		<button class="btn variant-filled-success" type="button" use:clipboard={errorMessage}>
+			Copy
+		</button>
+	</span>
+{/if}
+
+{#if $message}
+	<button class="btn variant-filled-success" use:clipboard={$message}>Copy</button>
+{/if}

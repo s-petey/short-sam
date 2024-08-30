@@ -10,6 +10,11 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
-<slot />
+<div class="container h-full">
+	<h1 class="text-xl w-full text-center">URL Shortener</h1>
+	<div class=" flex flex-col justify-center items-center mx-auto">
+		<slot />
+	</div>
+</div>
 
 <Toast />
