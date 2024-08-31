@@ -31,12 +31,13 @@ FROM node:20-alpine AS production
 # ARG ORIGIN=http://localhost:3000
 ARG PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
 ARG ORIGIN=${ORIGIN}
+ENV ORIGIN=${ORIGIN}
 WORKDIR /app
 COPY --from=install /app/node_modules ./node_modules
 COPY --from=install /app/bun.lockb ./
 COPY --from=build /app/build ./build
 COPY --from=build /app/package.json ./package.json
 EXPOSE 3000
-CMD ["echo", "-------------------------------------------------------"]
+CMD ["sh", "-c", "echo -------------------------------------------------------"]
 CMD ["sh", "-c", "echo $ORIGIN"]
-CMD ["sh", "-c", "ORIGIN=https://short.caprover.sam-peterson.com", "node", "-r", "dotenv/config", "build"]
+CMD ["node", "-r", "dotenv/config", "build"]
