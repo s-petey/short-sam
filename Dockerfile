@@ -30,6 +30,7 @@ RUN bun run build
 FROM node:20-alpine AS production
 # ARG ORIGIN=http://localhost:3000
 ARG PUBLIC_SUPABASE_URL=${PUBLIC_SUPABASE_URL}
+ARG ORIGIN=${ORIGIN}
 WORKDIR /app
 COPY --from=install /app/node_modules ./node_modules
 COPY --from=install /app/bun.lockb ./
@@ -38,5 +39,4 @@ COPY --from=build /app/package.json ./package.json
 EXPOSE 3000
 CMD ["echo", "-------------------------------------------------------"]
 CMD ["sh", "-c", "echo $ORIGIN"]
-# ENV ORIGIN=${ORIGIN}
-CMD ["ORIGIN=https://short.sam-peterson.com node", "-r", "dotenv/config", "build"]
+CMD ["node", "-r", "dotenv/config", "build"]
