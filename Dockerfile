@@ -38,4 +38,4 @@ COPY --from=build /app/package.json ./package.json
 EXPOSE 3000
 CMD ["echo", "-------------------------------------------------------"]
 CMD ["echo", "$ORIGIN"]
-CMD ["node", "-r", "dotenv/config", "build"]
+CMD ["ORIGIN=https://short.sam-peterson.com", "node", "-r", "dotenv/config", "build"]
