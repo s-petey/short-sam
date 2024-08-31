@@ -39,4 +39,4 @@ COPY --from=build /app/package.json ./package.json
 EXPOSE 3000
 CMD ["echo", "-------------------------------------------------------"]
 CMD ["sh", "-c", "echo $ORIGIN"]
-CMD ["node", "-r", "dotenv/config", "build"]
+CMD ["sh", "-c", "ORIGIN=https://short.caprover.sam-peterson.com", "node", "-r", "dotenv/config", "build"]
