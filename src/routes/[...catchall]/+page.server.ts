@@ -5,6 +5,7 @@ import { eq } from 'drizzle-orm';
 import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ url }) => {
+	console.log('ORIGIN -- ', process.env.ORIGIN);
 	const pathId = url.pathname.slice(1);
 
 	if (pathId.length !== 10) {
@@ -21,5 +22,3 @@ export const load: PageServerLoad = async ({ url }) => {
 
 	redirect(301, link.url);
 };
-
-export const trailingSlash = 'ignore';
