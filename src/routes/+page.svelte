@@ -1,28 +1,52 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
-	import { getToastStore } from '@skeletonlabs/skeleton';
-	import { clipboard } from '@skeletonlabs/skeleton';
 
 	let { data } = $props();
+	let showLinkCreated = $state(false);
+	let copied = $state(false);
 
-	const { form, errors, constraints, message, enhance } = superForm(data.form);
-	const toastStore = getToastStore();
+	const { form, errors, constraints, message, enhance } = superForm(data.form, {
+		onSubmit: () => {
+			copied = false;
+			showLinkCreated = false;
+		},
+		clearOnSubmit: 'errors-and-message'
+	});
 
 	$effect(() => {
 		if ($message) {
-			toastStore.trigger({
-				message: `Link created! ${$message}`,
-				autohide: true
-			});
+			showLinkCreated = true;
 		}
 	});
 
-	let errorMessage = $derived(
+	let linkExists = $derived(
 		$errors.url && typeof $errors.url[0] === 'string' ? $errors.url[0] : undefined
 	);
+
+	// Shared copy method
+	async function copyToClipboard(data: string, mimeType = 'text/plain') {
+		if (navigator.clipboard.write) {
+			await navigator.clipboard.write([
+				new ClipboardItem({
+					[mimeType]: new Blob([data], {
+						type: mimeType
+					}),
+					['text/plain']: new Blob([data], {
+						type: 'text/plain'
+					})
+				})
+			]);
+		} else {
+			// fallback since .writeText has wider browser support
+			await new Promise((resolve) => {
+				resolve(navigator.clipboard.writeText(String(data)));
+			});
+		}
+		copied = true;
+	}
 </script>
 
-<form class="space-y-4" method="post" use:enhance>
+<form class="space-y-4 flex flex-col items-center" method="post" use:enhance>
 	<label class="label" for="url">
 		<span>Url</span>
 
@@ -37,19 +61,27 @@
 	</label>
 
 	<div>
-		<button class="btn variant-filled" type="submit">Submit</button>
+		<button class="btn preset-filled" type="submit">Submit</button>
 	</div>
 </form>
 
-{#if errorMessage}
-	<span class="error invalid"> Link already exists </span>
-	<button class="btn variant-filled-success" type="button" use:clipboard={errorMessage}>
+{#if $message || linkExists}
+	{#if linkExists}
+		<span class="text-warning-500 invalid mt-4"> Link already exists </span>
+	{/if}
+	<button
+		class="btn preset-tonal-success mt-4"
+		type="button"
+		onclick={() => copyToClipboard(linkExists ? linkExists : $message)}
+	>
 		Copy
 	</button>
 {/if}
 
-{#if $message}
-	<button class="btn variant-filled-success mt-2" type="button" use:clipboard={$message}
-		>Copy</button
-	>
+{#if copied}
+	<span class="text-success-600">Link copied</span>
+{/if}
+
+{#if showLinkCreated}
+	Link created! <a target="_blank" href={$message} class="anchor">{$message}</a>
 {/if}

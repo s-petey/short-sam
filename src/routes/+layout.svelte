@@ -1,28 +1,22 @@
 <script lang="ts">
 	import '../app.postcss';
-
-	// Floating UI for Popups
-	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
-	import { storePopup } from '@skeletonlabs/skeleton';
-	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
-	import { Snippet } from 'svelte';
+	import type { Snippet } from 'svelte';
 
 	let {
 		children
 	}: {
 		children?: Snippet;
 	} = $props();
-
-	initializeStores();
-
-	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
-<div class="container h-full">
-	<h1 class="text-xl w-full text-center">URL Shortener</h1>
-	<div class=" flex flex-col justify-center items-center mx-auto">
+<div class="container h-full flex flex-col">
+	<h1 class="h1 w-full text-center">URL Shortener</h1>
+	<div class="grow flex flex-col items-center mx-auto">
 		{@render children?.()}
 	</div>
-</div>
 
-<Toast />
+	<p class="my-4 text-center">
+		To use, simply enter a URL, submit, and click copy! <br /> If the URL already exists we will not
+		re-create it, but still allow you to copy it.
+	</p>
+</div>
