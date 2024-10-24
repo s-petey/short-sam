@@ -5,6 +5,14 @@
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
 	import { storePopup } from '@skeletonlabs/skeleton';
 	import { initializeStores, Toast } from '@skeletonlabs/skeleton';
+	import { Snippet } from 'svelte';
+
+	let {
+		children
+	}: {
+		children?: Snippet;
+	} = $props();
+
 	initializeStores();
 
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
@@ -13,7 +21,7 @@
 <div class="container h-full">
 	<h1 class="text-xl w-full text-center">URL Shortener</h1>
 	<div class=" flex flex-col justify-center items-center mx-auto">
-		<slot />
+		{@render children?.()}
 	</div>
 </div>
 

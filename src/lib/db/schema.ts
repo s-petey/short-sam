@@ -1,4 +1,4 @@
-import { pgTableCreator, serial, text } from 'drizzle-orm/pg-core';
+import { pgTableCreator, text } from 'drizzle-orm/pg-core';
 import { createInsertSchema } from 'drizzle-zod';
 import type { z } from 'zod';
 

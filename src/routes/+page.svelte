@@ -1,22 +1,25 @@
 <script lang="ts">
 	import { superForm } from 'sveltekit-superforms';
-	import SuperDebug from 'sveltekit-superforms';
 	import { getToastStore } from '@skeletonlabs/skeleton';
 	import { clipboard } from '@skeletonlabs/skeleton';
 
-	export let data;
+	let { data } = $props();
 
 	const { form, errors, constraints, message, enhance } = superForm(data.form);
 	const toastStore = getToastStore();
 
-	$: if ($message) {
-		toastStore.trigger({
-			message: `Link created! ${$message}`,
-			autohide: true
-		});
-	}
+	$effect(() => {
+		if ($message) {
+			toastStore.trigger({
+				message: `Link created! ${$message}`,
+				autohide: true
+			});
+		}
+	});
 
-	$: errorMessage = $errors.url && typeof $errors.url[0] === 'string' ? $errors.url[0] : undefined;
+	let errorMessage = $derived(
+		$errors.url && typeof $errors.url[0] === 'string' ? $errors.url[0] : undefined
+	);
 </script>
 
 <form class="space-y-4" method="post" use:enhance>
@@ -39,15 +42,14 @@
 </form>
 
 {#if errorMessage}
-	<span class="error invalid">
-		Link already exists
-
-		<button class="btn variant-filled-success" type="button" use:clipboard={errorMessage}>
-			Copy
-		</button>
-	</span>
+	<span class="error invalid"> Link already exists </span>
+	<button class="btn variant-filled-success" type="button" use:clipboard={errorMessage}>
+		Copy
+	</button>
 {/if}
 
 {#if $message}
-	<button class="btn variant-filled-success" use:clipboard={$message}>Copy</button>
+	<button class="btn variant-filled-success mt-2" type="button" use:clipboard={$message}
+		>Copy</button
+	>
 {/if}
