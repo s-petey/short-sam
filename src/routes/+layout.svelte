@@ -9,7 +9,7 @@
 	} = $props();
 </script>
 
-<div class="container h-full flex flex-col">
+<div class="container h-full flex flex-col justify-self-center">
 	<h1 class="h1 w-full text-center">URL Shortener</h1>
 	<div class="grow flex flex-col items-center mx-auto">
 		{@render children?.()}
